@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Addon Author="Paul Friedrich" APIVersion="10" Name="GGCalendar" Description="">
     <Script Name="GGCalendar.lua"/>
+    <Script Name="GGCalendarEvent.lua"/>
+    <Script Name="GGCalendarNet.lua"/>
     <Form Name="GGCalendar.xml"/>
 </Addon>

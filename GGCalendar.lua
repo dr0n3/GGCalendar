@@ -4,12 +4,19 @@
 -----------------------------------------------------------------------------------------------
  
 require "Window"
+require "ICComm"
+require "ICCommLib"
  
 -----------------------------------------------------------------------------------------------
 -- GGCalendar Module Definition
 -----------------------------------------------------------------------------------------------
 local GGCalendar = {} 
- 
+
+GGCalendar.JSON = Apollo.GetPackage("Lib:dkJSON-2.5").tPackage
+GGCalendar.ADDON_VERSION = 0.1
+
+GGCalendar.tEvents = {}
+
 -----------------------------------------------------------------------------------------------
 -- Constants
 -----------------------------------------------------------------------------------------------
@@ -21,7 +28,7 @@ local GGCalendar = {}
 function GGCalendar:new(o)
     o = o or {}
     setmetatable(o, self)
-    self.__index = self 
+    self.__index = self
 
     -- initialize variables here
 
@@ -68,6 +75,8 @@ function GGCalendar:OnDocLoaded()
 		-- e.g. Apollo.RegisterEventHandler("KeyDown", "OnKeyDown", self)
 		Apollo.RegisterSlashCommand("ggc", "OnGGCalendarOn", self)
 
+		-- setup chat network
+		self:SetupChat()
 
 		-- Do additional Addon initialization here
 	end
@@ -80,7 +89,9 @@ end
 
 -- on SlashCommand "/ggc"
 function GGCalendar:OnGGCalendarOn()
-	self.wndMain:Invoke() -- show the window
+	self:BroadcastMessage(1, "hello world")
+
+	-- self.wndMain:Invoke() -- show the window
 end
 
 
