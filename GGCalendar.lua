@@ -74,6 +74,7 @@ function GGCalendar:OnDocLoaded()
 		-- Register handlers for events, slash commands and timer, etc.
 		-- e.g. Apollo.RegisterEventHandler("KeyDown", "OnKeyDown", self)
 		Apollo.RegisterSlashCommand("ggc", "OnGGCalendarOn", self)
+		Apollo.RegisterSlashCommand("ggcshow", "OnGGCalendarShow", self)
 
 		-- setup chat network
 		self:SetupChat()
@@ -88,10 +89,19 @@ end
 -- Define general functions here
 
 -- on SlashCommand "/ggc"
-function GGCalendar:OnGGCalendarOn()
-	self:BroadcastMessage(1, "hello world")
-
+function GGCalendar:OnGGCalendarOn(strCmd, strArgs)
+	tEvent = self:NewEvent(strArgs, "01.01.1970")
+	self:AddEvent(tEvent)
+	
 	-- self.wndMain:Invoke() -- show the window
+end
+
+-- on SlashCommand "/ggcshow"
+function GGCalendar:OnGGCalendarShow()
+	strMsg = GGCalendar.JSON.encode(self.tEvents)
+	Print("Events: "..strMsg)
+	
+	self:SyncCalendar()
 end
 
 

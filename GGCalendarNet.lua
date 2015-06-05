@@ -1,68 +1,60 @@
 local GGCalendar = Apollo.GetAddon("GGCalendar")
 
 GGCalendar.MessageType = {
-	SYNC = 1,
-	NEW_EVENT = 2
+	SYNC = 1
 }
+
+-- MESSAGE FORMAT:
+-- TYPE		(MessageType)
+-- MSG		(Message/Data, not necessarily string)
 
 local tCommChannel
 
 function GGCalendar:SetupChat()	
 	Apollo.RegisterTimerHandler("SetupCommChannel", "SetupCommChannel", self)
-	Apollo.CreateTimer("SetupCommChannel", 5, false)
+	Apollo.CreateTimer("SetupCommChannel", 1, false)
 	Apollo.StartTimer("SetupCommChannel")
-	
-	-- self:SyncCalendar()
 end
 
--- taken from the GroupFinder addon
+-- taken from the GroupFinder addon (https://bitbucket.org/jonasfriberg/groupfinder)
 function GGCalendar:SetupCommChannel()
-	Print("Setting up channel")
 	if not tCommChannel then
-		Print("joining channel")
 		tCommChannel = ICCommLib.JoinChannel("GGCalendar", ICCommLib.CodeEnumICCommChannelType.Global)
 	end
 	
 	if tCommChannel:IsReady() then
-		Print("joined channel")
-		tCommChannel:SetSendMessageResultFunction("OnSendMessageResultEvent", self)
-        tCommChannel:SetJoinResultFunction("OnJoinResultEvent", self)
-        tCommChannel:SetThrottledFunction("OnThrottledEvent", self)
 		tCommChannel:SetReceivedMessageFunction("OnMessageReceived", self)
 	else
 		Apollo.StartTimer("SetupCommChannel")
 	end
 end
 
-function GGCalendar:OnSendMessageResultEvent(iccomm, eResult, idMessage)
-    Print("Send result: "..eResult.." - "..idMessage)
-end
-
-function GGCalendar:OnJoinResultEvent(iccomm, eResult)
-    Print("Join result: "..eResult)
-end
-
-function GGCalendar:OnThrottledEvent(iccomm, strSender, idMessage)
-    
-end
-
 function GGCalendar:OnMessageReceived(tChannel, tData)
-	Print("received")
 	tMsg = GGCalendar.JSON.decode(tData)
 	
-	Print("Data: "..tMsg)
+	if tMsg.TYPE == GGCalendar.MessageType.SYNC then
+		tNewEvents = tMsg.MSG
+		
+		for id,event in pairs(tNewEvents) do
+			myEvent = GGCalendar.tEvents[id]
+			
+			if myEvent == nil or myEvent.CHANGED < event.CHANGED then
+				GGCalendar:AddEvent(event)
+			end
+		end
+	end
 end
 
-function GGCalendar:BroadcastMessage(nType, strMsg)
+function GGCalendar:BroadcastMessage(nType, tData)
 	tMsg = {
 		TYPE = nType,
-		MSG = strMsg
+		MSG = tData
 	}
 	
-	tCommChannel:SendMessage(GGCalendar.JSON.encode(tMsg))
-	Print("sent")
+	strMsg = GGCalendar.JSON.encode(tMsg)
+	tCommChannel:SendMessage(strMsg)
 end
 
 function GGCalendar:SyncCalendar()
-	self:BroadcastMessage(self.MessageType.SYNC, "")
+	self:BroadcastMessage(self.MessageType.SYNC, GGCalendar.tEvents)
 end
