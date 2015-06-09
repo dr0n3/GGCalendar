@@ -67,6 +67,9 @@ function GGCalendar:OnDocLoaded()
 		end
 		
 	    self.wndMain:Show(false, true)
+	
+		self.wndCalendar = self.wndMain:FindChild("CalendarGrid")
+		self.wndCalendarControl = self.wndMain:FindChild("CalendarControlGrid")
 
 		-- if the xmlDoc is no longer needed, you should set it to nil
 		-- self.xmlDoc = nil
@@ -90,20 +93,22 @@ end
 
 -- on SlashCommand "/ggc"
 function GGCalendar:OnGGCalendarOn(strCmd, strArgs)
-	tEvent = self:NewEvent(strArgs, "01.01.1970")
+	local tEvent = self:NewEvent(strArgs, "01.01.1970")
 	self:AddEvent(tEvent)
 	
-	-- self.wndMain:Invoke() -- show the window
+	
+	self:BuildCalendar()
+		
+	self.wndMain:Invoke() -- show the window
 end
 
 -- on SlashCommand "/ggcshow"
 function GGCalendar:OnGGCalendarShow()
-	strMsg = GGCalendar.JSON.encode(self.tEvents)
+	local strMsg = GGCalendar.JSON.encode(self.tEvents)
 	Print("Events: "..strMsg)
 	
 	self:SyncCalendar()
 end
-
 
 -----------------------------------------------------------------------------------------------
 -- GGCalendarForm Functions
@@ -117,7 +122,6 @@ end
 function GGCalendar:OnCancel()
 	self.wndMain:Close() -- hide the window
 end
-
 
 -----------------------------------------------------------------------------------------------
 -- GGCalendar Instance

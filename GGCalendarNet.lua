@@ -30,13 +30,13 @@ function GGCalendar:SetupCommChannel()
 end
 
 function GGCalendar:OnMessageReceived(tChannel, tData)
-	tMsg = GGCalendar.JSON.decode(tData)
+	local tMsg = GGCalendar.JSON.decode(tData)
 	
 	if tMsg.TYPE == GGCalendar.MessageType.SYNC then
-		tNewEvents = tMsg.MSG
+		local tNewEvents = tMsg.MSG
 		
 		for id,event in pairs(tNewEvents) do
-			myEvent = GGCalendar.tEvents[id]
+			local myEvent = GGCalendar.tEvents[id]
 			
 			if myEvent == nil or myEvent.CHANGED < event.CHANGED then
 				GGCalendar:AddEvent(event)
@@ -46,12 +46,12 @@ function GGCalendar:OnMessageReceived(tChannel, tData)
 end
 
 function GGCalendar:BroadcastMessage(nType, tData)
-	tMsg = {
+	local tMsg = {
 		TYPE = nType,
 		MSG = tData
 	}
 	
-	strMsg = GGCalendar.JSON.encode(tMsg)
+	local strMsg = GGCalendar.JSON.encode(tMsg)
 	tCommChannel:SendMessage(strMsg)
 end
 
