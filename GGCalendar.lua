@@ -15,8 +15,6 @@ local GGCalendar = {}
 GGCalendar.JSON = Apollo.GetPackage("Lib:dkJSON-2.5").tPackage
 GGCalendar.ADDON_VERSION = 0.1
 
-GGCalendar.tEvents = {}
-
 -----------------------------------------------------------------------------------------------
 -- Constants
 -----------------------------------------------------------------------------------------------
@@ -70,7 +68,11 @@ function GGCalendar:OnDocLoaded()
 	
 		self.wndCalendar = self.wndMain:FindChild("CalendarGrid")
 		self.wndCalendarControl = self.wndMain:FindChild("CalendarControlGrid")
-
+		
+		self.wndEvents = self.wndMain:FindChild("Events")
+		self.wndSelectedDate = self.wndEvents:FindChild("lblSelectedDate")
+		self.wndEventList = self.wndEvents:FindChild("EventList")
+		
 		-- if the xmlDoc is no longer needed, you should set it to nil
 		-- self.xmlDoc = nil
 		
@@ -78,6 +80,7 @@ function GGCalendar:OnDocLoaded()
 		-- e.g. Apollo.RegisterEventHandler("KeyDown", "OnKeyDown", self)
 		Apollo.RegisterSlashCommand("ggc", "OnGGCalendarOn", self)
 		Apollo.RegisterSlashCommand("ggcshow", "OnGGCalendarShow", self)
+		Apollo.RegisterSlashCommand("ggcadd", "OnGGCalendarAdd", self)
 
 		-- setup chat network
 		self:SetupChat()
@@ -92,23 +95,27 @@ end
 -- Define general functions here
 
 -- on SlashCommand "/ggc"
-function GGCalendar:OnGGCalendarOn(strCmd, strArgs)
-	local tEvent = self:NewEvent(strArgs, "01.01.1970")
-	self:AddEvent(tEvent)
-	
-	
-	self:BuildCalendar()
-		
+function GGCalendar:OnGGCalendarOn(strCmd, strArgs)		
 	self.wndMain:Invoke() -- show the window
 end
 
 -- on SlashCommand "/ggcshow"
 function GGCalendar:OnGGCalendarShow()
+	self:SyncCalendar()
+
 	local strMsg = GGCalendar.JSON.encode(self.tEvents)
 	Print("Events: "..strMsg)
-	
-	self:SyncCalendar()
 end
+
+-- on SlashCommand "/ggcadd"
+function GGCalendar:OnGGCalendarAdd(strCmd, strArgs)
+	local now = os.date("*t")
+	now.hour = now.hour + 3
+	
+	local event = self:NewEvent(strArgs, now)
+	self:AddEvent(event)
+end
+
 
 -----------------------------------------------------------------------------------------------
 -- GGCalendarForm Functions
