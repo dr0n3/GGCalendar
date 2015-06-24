@@ -53,6 +53,28 @@ function GGCalendar:OnLoad()
 end
 
 -----------------------------------------------------------------------------------------------
+-- GGCalendar OnSave OnRestore
+-----------------------------------------------------------------------------------------------
+
+function GGCalendar:OnSave(eLevel)
+	local tSave = {}
+
+	if (eLevel == GameLib.CodeEnumAddonSaveLevel.Account) then		
+		tSave = {tEvents = self.tEvents}
+
+		return tSave
+	end
+end
+
+function GGCalendar:OnRestore(eLevel, tSavedData)
+	if (eLevel == GameLib.CodeEnumAddonSaveLevel.Account) then
+		if tSavedData.tEvents ~= nil then 
+			self.tEvents = tSavedData.tEvents
+		end
+	end
+end
+
+-----------------------------------------------------------------------------------------------
 -- GGCalendar OnDocLoaded
 -----------------------------------------------------------------------------------------------
 function GGCalendar:OnDocLoaded()
