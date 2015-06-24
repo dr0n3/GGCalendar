@@ -84,6 +84,12 @@ function GGCalendar:BuildCalendar()
 		if self.tCurrentDate.day == i and self.tCurrentDate.month == month and self.tCurrentDate.year == year then
 			item:FindChild("SelectedMarker"):SetSprite("BK3:sprHolo_ResizeHandle") -- apparently, there is no way to change the visibility on runtime
 		end
+		
+		local events = self:FindEventsOnDate({day = i, month = month, year = year})
+		
+		if next(events) ~= nil then
+			item:FindChild("EventMarker"):SetSprite("BK3:UI_Icon_CharacterCreate_Class_Medic")
+		end
 	end
 	
 	local totalDaysYet = dowFirst + daysInMonth -- number of days, that are now displayed
@@ -94,6 +100,12 @@ function GGCalendar:BuildCalendar()
 		item:FindChild("lblDate"):SetText(i - totalDaysYet)
 		item:FindChild("lblDate"):SetTextColor("UI_BtnTextHoloDisabled")
 		item:SetData({day=(i - totalDaysYet), month=nextMonth, year=nextYear})
+		
+		local events = self:FindEventsOnDate({day = (i - totalDaysYet), month = nextMonth, year = nextYear})
+		if next(events) ~= nil then
+			item:FindChild("EventMarker"):SetSprite("BK3:UI_Icon_CharacterCreate_Class_Medic")
+			item:FindChild("EventMarker"):SetBGColor("darkgray")
+		end
 	end
 	
 	local strMonth = GetNameOfMonth(month)

@@ -21,6 +21,7 @@ function GGCalendar:OnBtnNewEventAccept()
 	if not error then
 		local tEvent = self:NewEvent(name, attendees, GGCalendar.tCurrentDate, {hour = hour, min = min})
 		self:AddEvent(tEvent)
+		self:BuildCalendar()
 		self:RefreshEventList()
 	end
 	
