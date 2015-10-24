@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Addon Author="Paul Friedrich" APIVersion="10" Name="GGCalendar" Description="">
+<Addon Author="Paul Friedrich" APIVersion="11" Name="WHCCalendar" Description="">
     <Script Name="Lib\LibJSON\LibJSON-2.5.lua"/>
-    <Script Name="GGCalendar.lua"/>
-    <Script Name="GGCalendarEvent.lua"/>
-    <Script Name="GGCalendarAddEvent.lua"/>
-    <Script Name="GGCalendarNet.lua"/>
-    <Form Name="GGCalendar.xml"/>
+    <Script Name="WHCCalendar.lua"/>
+    <Script Name="WHCCalendarEvent.lua"/>
+    <Script Name="WHCCalendarAddEvent.lua"/>
+    <Script Name="WHCCalendarNet.lua"/>
+    <Form Name="WHCCalendar.xml"/>
 </Addon>
