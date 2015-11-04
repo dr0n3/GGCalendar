@@ -2,8 +2,14 @@
 <Addon Author="Paul Friedrich" APIVersion="11" Name="WHCCalendar" Description="">
     <Script Name="Lib\LibJSON\LibJSON-2.5.lua"/>
     <Script Name="WHCCalendar.lua"/>
-    <Script Name="WHCCalendarEvent.lua"/>
-    <Script Name="WHCCalendarAddEvent.lua"/>
-    <Script Name="WHCCalendarNet.lua"/>
+    <Script Name="WHCAddEvent.lua"/>
+    <Script Name="Event.lua"/>
+    <Script Name="Net.lua"/>
+    <Script Name="List.lua"/>
+    <Script Name="States\StateIDLE.lua"/>
+    <Script Name="States\StateWAITOFF.lua"/>
+    <Script Name="States\StateWAITACK.lua"/>
+    <Script Name="States\StateSYNC.lua"/>
+    <Script Name="States\StateSENDSYNC.lua"/>
     <Form Name="WHCCalendar.xml"/>
 </Addon>

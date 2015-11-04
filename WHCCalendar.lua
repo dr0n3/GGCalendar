@@ -102,10 +102,11 @@ function WHCCalendar:OnDocLoaded()
 		-- e.g. Apollo.RegisterEventHandler("KeyDown", "OnKeyDown", self)
 		Apollo.RegisterSlashCommand("whc", "OnWHCCalendarOn", self)
 		Apollo.RegisterSlashCommand("whcshow", "OnWHCCalendarShow", self)
-		Apollo.RegisterSlashCommand("whcadd", "OnWHCCalendarAdd", self)
+		Apollo.RegisterSlashCommand("whccd", "OnWHCCalendarCD", self)
+		Apollo.RegisterSlashCommand("whcsync", "OnWHCCalendarSync", self)
 
 		-- setup chat network
-		self:SetupChat()
+		self:SetupNet()
 
 		-- Do additional Addon initialization here
 	end
@@ -127,16 +128,17 @@ function WHCCalendar:OnWHCCalendarShow()
 
 	--local strMsg = WHCCalendar.JSON.encode(self.tEvents)
 	--Print("Events: "..strMsg)
+	Print(ICCommLib.GetUploadCapacityByType(ICCommLib.CodeEnumICCommChannelType.GLOBAL))
+end
+
+-- on SlashCommand "/whccd"
+function WHCCalendar:OnWHCCalendarCD(strCmd, strArgs)
 	Print(ICCommLib.GetUploadCapacityByType(ICCommLib.CodeEnumICCommChannelType.Global))
 end
 
--- on SlashCommand "/whcadd"
-function WHCCalendar:OnWHCCalendarAdd(strCmd, strArgs)
-	local now = os.date("*t")
-	now.hour = now.hour + 3
-	
-	local event = self:NewEvent(strArgs, now)
-	self:AddEvent(event)
+-- on SlashCommand "/whcsync"
+function WHCCalendar:OnWHCCalendarSync()
+	self:RequestSync()
 end
 
 
