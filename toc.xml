@@ -11,5 +11,6 @@
     <Script Name="States\StateWAITACK.lua"/>
     <Script Name="States\StateSYNC.lua"/>
     <Script Name="States\StateSENDSYNC.lua"/>
+    <Script Name="States\StateMASTERSYNC.lua"/>
     <Form Name="WHCCalendar.xml"/>
 </Addon>

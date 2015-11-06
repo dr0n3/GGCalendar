@@ -1,6 +1,6 @@
 local WHC = Apollo.GetAddon("WHCCalendar")
-local StateSENDSYNC = { }
 local List = Apollo.GetPackage("WHCCalendar:List").tPackage.Init()
+local StateSENDSYNC = { }
 local syncList = nil
 local strRecipient = nil
 
@@ -18,19 +18,20 @@ function StateSENDSYNC.Init()
 	end
 	
 	function self:Do()
-		local event = List:pop(syncList)
-		if not (event == nil or strRecipient == nil) then
-			WHC:SendMessage(WHC.MessageType.SYNC, event, strRecipient)
-			WHC:ResetTimeout()
-			Print("Send Sync: "..event)
+		for i=0,4 do
+			local event = List:pop(syncList)
+			if not (event == nil or strRecipient == nil) then
+				WHC:SendMessage(WHC.MessageType.SYNC, event, strRecipient)
+				WHC:ResetTimeout()
+			end
 		end
 	end
 	
 	function self:InitSync(strRec)
 		syncList = List:new()
-		List:push(syncList, "test1")
-		List:push(syncList, "test2")
-		List:push(syncList, "test3")
+		for id, event in pairs(WHC.tEvents) do
+			List:push(syncList, { ID = id, EVENT = event })
+		end		
 		
 		strRecipient = strRec
 	end

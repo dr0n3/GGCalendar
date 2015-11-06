@@ -19,8 +19,6 @@ function WHCCalendar:NewEvent(strName, iAttendees, tDate, tTime)
 	local playername = GameLib.GetPlayerUnit():GetName()
 	local playername = playername:gsub(" ", "")
 	
-	local id = playername..os.time()
-	
 	local tEvent = {
 		NAME = strName,
 		CREATOR = playername,

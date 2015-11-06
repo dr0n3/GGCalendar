@@ -7,7 +7,7 @@ function StateWAITACK.Init()
 	}
 	
 	function self:OnMessage(tChannel, tMsg, strSender)
-		if not tMsg.TYPE == WHC.MessageType.SYNC_ACK then
+		if tMsg.TYPE ~= WHC.MessageType.SYNC_ACK then
 			return
 		end
 	

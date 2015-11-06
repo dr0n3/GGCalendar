@@ -7,14 +7,17 @@ function StateWAITOFF.Init()
 	}
 	
 	function self:OnMessage(tChannel, tMsg, strSender)
-		if not tMsg.TYPE == WHC.MessageType.SYNC_OFF then
+		if tMsg.TYPE ~= WHC.MessageType.SYNC_OFF then
 			return
 		end
 	
 		Print(strSender.." offers sync")
 		
-		WHC:SendMessage(WHC.MessageType.SYNC_ACK, nil, strSender)
-		WHC:SwitchState(WHC.StateSYNC)
+		if WHC.MasterNodes[strSender] then
+			Print(strSender.." is a master node - accepting sync")
+			WHC:SendMessage(WHC.MessageType.SYNC_ACK, nil, strSender)
+			WHC:SwitchState(WHC.StateSYNC)
+		end
 	end
 	
 	function self:GetTimeout()

@@ -7,12 +7,23 @@ function StateSYNC.Init()
 	}
 	
 	function self:OnMessage(tChannel, tMsg, strSender)
-		if not tMsg.TYPE == WHC.MessageType.SYNC then
+		if tMsg.TYPE ~= WHC.MessageType.SYNC then
 		 return
 		end
 		
 		WHC:ResetTimeout()
-		Print("Got Sync "..tMsg.MSG)
+		
+		-- override the event, if the received one is newer
+		local event = WHC.tEvents[tMsg.MSG.ID]
+		if event ~= nil then
+			if event.CHANGED >= tMsg.MSG.EVENT.CHANGED then
+				return
+			end
+		end
+		
+		WHC.tEvents[tMsg.MSG.ID] = tMsg.MSG.EVENT
+		
+		Print("Got Sync "..tMsg.MSG.ID)
 	end
 	
 	function self:GetTimeout()

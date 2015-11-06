@@ -7,14 +7,17 @@ function StateIDLE.Init()
 	}
 	
 	function self:OnMessage(tChannel, tMsg, strSender)
-		if not tMsg.TYPE == WHC.MessageType.SYNC_REQ then
+		if tMsg.TYPE ~= WHC.MessageType.SYNC_REQ then
 			return
 		end
 		
 		Print(strSender.." requests sync")
 		
-		WHC:SendMessage(WHC.MessageType.SYNC_OFF, nil, strSender)
-		WHC:SwitchState(WHC.StateWAITACK)
+		if WHC.MasterNodes[GameLib.GetPlayerUnit():GetName()] then
+			Print("Sending sync offer")
+			WHC:SendMessage(WHC.MessageType.SYNC_OFF, nil, strSender)
+			WHC:SwitchState(WHC.StateWAITACK)
+		end
 	end
 	
 	function self:GetTimeout()

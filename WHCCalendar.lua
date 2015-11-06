@@ -104,6 +104,7 @@ function WHCCalendar:OnDocLoaded()
 		Apollo.RegisterSlashCommand("whcshow", "OnWHCCalendarShow", self)
 		Apollo.RegisterSlashCommand("whccd", "OnWHCCalendarCD", self)
 		Apollo.RegisterSlashCommand("whcsync", "OnWHCCalendarSync", self)
+		Apollo.RegisterSlashCommand("whcmaster", "OnWHCCalendarMaster", self)
 
 		-- setup chat network
 		self:SetupNet()
@@ -126,19 +127,25 @@ end
 function WHCCalendar:OnWHCCalendarShow()
 	-- self:SyncCalendar()
 
-	--local strMsg = WHCCalendar.JSON.encode(self.tEvents)
-	--Print("Events: "..strMsg)
-	Print(ICCommLib.GetUploadCapacityByType(ICCommLib.CodeEnumICCommChannelType.GLOBAL))
+	local strMsg = WHCCalendar.JSON.encode(self.tEvents)
+	Print("Events: "..strMsg)
 end
 
 -- on SlashCommand "/whccd"
 function WHCCalendar:OnWHCCalendarCD(strCmd, strArgs)
-	Print(ICCommLib.GetUploadCapacityByType(ICCommLib.CodeEnumICCommChannelType.Global))
+	local up = ICCommLib.GetUploadCapacityByType(ICCommLib.CodeEnumICCommChannelType.Guild)
+	local down = ICCommLib.GetDownloadCapacityByType(ICCommLib.CodeEnumICCommChannelType.Guild)
+	Print("up: "..up.." down: "..down)
 end
 
 -- on SlashCommand "/whcsync"
 function WHCCalendar:OnWHCCalendarSync()
 	self:RequestSync()
+end
+
+-- on SlashCommand "/whcmaster"
+function WHCCalendar:OnWHCCalendarMaster()
+	self:MasterSync()
 end
 
 
