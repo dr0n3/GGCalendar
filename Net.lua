@@ -23,7 +23,8 @@ local Channel = {
 
 WHCCalendar.MasterNodes = {
 	["Finn Walker"] = true,
-	["Pasha Brekov"] = true
+	["Pasha Brekov"] = true,
+	CHANGED = 12
 }
 
 function WHCCalendar:SetupNet()
@@ -121,12 +122,16 @@ end
 -----------------------------------------------------------------------------------------------
 
 function WHCCalendar:RequestSync()
+	if tState.current ~= self.StateIDLE then return end
+	
 	self:SendMessage(self.MessageType.SYNC_REQ, nil, nil)
 	self:SwitchState(self.StateWAITOFF)
 end
 
 -- sync with every master node available
 function WHCCalendar:MasterSync()
+	if tState.current ~= self.StateIDLE then return end
+
 	self:SwitchState(self.StateMASTERSYNC)
 	tState.current:InitMasterSync()
 	tState.current:Do()

@@ -52,6 +52,12 @@ function WHCCalendar:BuildCalendar()
 	local dowFirst = GetDayOfWeek(1, month, year) -- month starts on dow, Monday = 0
 	local dowLast = GetDayOfWeek(daysInMonth, month, year) -- month ends on dow
 	
+	-- only show the "Add Event" button to master nodes
+	local btnAddEvent = self.wndMain:FindChild("btnAddEvent")
+	if btnAddEvent ~= nil then
+		if not self.MasterNodes[GameLib.GetPlayerUnit():GetName()] then btnAddEvent:Destroy() end
+	end
+	
 	self.wndCalendar:DestroyChildren()
 	
 	local previousMonth, previousYear = ChangeDate(month - 1, year)

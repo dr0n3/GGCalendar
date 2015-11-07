@@ -92,7 +92,7 @@
             <Event Name="ButtonSignal" Function="OnCancel"/>
         </Control>
         <Event Name="WindowShow" Function="OnCalendarFormShow"/>
-        <Control Class="Button" Base="CRB_UIKitSprites:btn_square_LARGE_Green" Font="CRB_InterfaceMedium" ButtonType="PushButton" RadioGroup="" LAnchorPoint="0" LAnchorOffset="26" TAnchorPoint="1" TAnchorOffset="-73" RAnchorPoint="0" RAnchorOffset="146" BAnchorPoint="1" BAnchorOffset="-32" DT_VCENTER="1" DT_CENTER="1" Name="btnAddEvent" BGColor="ffffffff" TextColor="ffffffff" NewControlDepth="2" WindowSoundTemplate="TogglePhys02" TextId="" Text="Neues Event" TooltipColor="" NormalTextColor="ffffffff" PressedTextColor="ffffffff" FlybyTextColor="ffffffff" PressedFlybyTextColor="ffffffff" DisabledTextColor="ffffffff">
+        <Control Class="Button" Base="CRB_UIKitSprites:btn_square_LARGE_Green" Font="CRB_InterfaceMedium" ButtonType="PushButton" RadioGroup="" LAnchorPoint="0" LAnchorOffset="26" TAnchorPoint="1" TAnchorOffset="-73" RAnchorPoint="0" RAnchorOffset="146" BAnchorPoint="1" BAnchorOffset="-32" DT_VCENTER="1" DT_CENTER="1" Name="btnAddEvent" BGColor="ffffffff" TextColor="ffffffff" NewControlDepth="2" WindowSoundTemplate="TogglePhys02" TextId="" Text="Neues Event" TooltipColor="" NormalTextColor="ffffffff" PressedTextColor="ffffffff" FlybyTextColor="ffffffff" PressedFlybyTextColor="ffffffff" DisabledTextColor="ffffffff" Visible="1" HideInEditor="0">
             <Event Name="ButtonSignal" Function="OnBtnAddEvent"/>
         </Control>
     </Form>

@@ -60,7 +60,7 @@ function WHCCalendar:OnSave(eLevel)
 	local tSave = {}
 
 	if (eLevel == GameLib.CodeEnumAddonSaveLevel.Character) then		
-		tSave = {tEvents = self.tEvents}
+		tSave = {tEvents = self.tEvents, MasterNodes = self.MasterNodes}
 
 		return tSave
 	end
@@ -70,6 +70,7 @@ function WHCCalendar:OnRestore(eLevel, tSavedData)
 	if (eLevel == GameLib.CodeEnumAddonSaveLevel.Character) then
 		if tSavedData.tEvents ~= nil then 
 			self.tEvents = tSavedData.tEvents
+			self.MasterNodes = tSavedData.MasterNodes or self.MasterNodes
 		end
 	end
 end
@@ -105,6 +106,8 @@ function WHCCalendar:OnDocLoaded()
 		Apollo.RegisterSlashCommand("whccd", "OnWHCCalendarCD", self)
 		Apollo.RegisterSlashCommand("whcsync", "OnWHCCalendarSync", self)
 		Apollo.RegisterSlashCommand("whcmaster", "OnWHCCalendarMaster", self)
+		Apollo.RegisterSlashCommand("whcaddmn", "OnWHCCalendarAddMN", self)
+		Apollo.RegisterSlashCommand("whcremovemn", "OnWHCCalendarRemoveMN", self)
 
 		-- setup chat network
 		self:SetupNet()
@@ -129,6 +132,12 @@ function WHCCalendar:OnWHCCalendarShow()
 
 	local strMsg = WHCCalendar.JSON.encode(self.tEvents)
 	Print("Events: "..strMsg)
+	
+	for node, b in pairs(self.MasterNodes) do
+		Print("Master Node: "..node)
+	end
+	
+	Print("MN Changed: "..self.MasterNodes.CHANGED)
 end
 
 -- on SlashCommand "/whccd"
@@ -148,6 +157,22 @@ function WHCCalendar:OnWHCCalendarMaster()
 	self:MasterSync()
 end
 
+-- on SlashCommand "/whcaddmn"
+function WHCCalendar:OnWHCCalendarAddMN(strCmd, strArgs)
+	local name = strArgs
+	
+	if name == nil or name == "" then return end
+	self.MasterNodes[name] = true
+	self.MasterNodes.CHANGED = os.time()
+end
+
+function WHCCalendar:OnWHCCalendarRemoveMN(strCmd, strArgs)
+	local name = strArgs
+	
+	if name == nil or name == "" then return end
+	self.MasterNodes[name] = nil
+	self.MasterNodes.CHANGED = os.time()
+end
 
 -----------------------------------------------------------------------------------------------
 -- WHCCalendarForm Functions

@@ -29,6 +29,8 @@ function StateSENDSYNC.Init()
 	
 	function self:InitSync(strRec)
 		syncList = List:new()
+		
+		List:push(syncList, { MASTER = WHC.MasterNodes })
 		for id, event in pairs(WHC.tEvents) do
 			List:push(syncList, { ID = id, EVENT = event })
 		end		
