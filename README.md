@@ -1,1 +1,3 @@
-This is the guild calendar of the Wildstar guild <We Have Candy>, EU-Jabbit
+This Wildstar addon implements an ingame guild calendar, allowing guildmembers to create and sign up for events.
+
+Abandoned.
